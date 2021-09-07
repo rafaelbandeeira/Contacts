@@ -3,6 +3,7 @@ package com.rafaelbandeeira.contacts.ui
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.rafaelbandeeira.contacts.data.Contact
 
 class ContactAdapter : RecyclerView.Adapter<ContactAdapter.ContactAdapterViewHolder>() {
     private val list: MutableList<Contact> = mutableListOf()
@@ -12,14 +13,14 @@ class ContactAdapter : RecyclerView.Adapter<ContactAdapter.ContactAdapterViewHol
     }
 
     override fun onBindViewHolder(holder: ContactAdapterViewHolder, position: Int) {
-        TODO("Not yet implemented")
+        holder.bind(list[position])
     }
 
     override fun getItemCount(): Int {
-        TODO("Not yet implemented")
+        return list.size
     }
 
     class ContactAdapterViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-
+        fun bind(contact: Contact) {  }
     }
 }
