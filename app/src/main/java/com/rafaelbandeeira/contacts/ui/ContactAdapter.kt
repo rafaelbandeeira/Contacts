@@ -1,15 +1,20 @@
 package com.rafaelbandeeira.contacts.ui
 
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.rafaelbandeeira.contacts.R
 import com.rafaelbandeeira.contacts.data.Contact
+import com.rafaelbandeeira.contacts.databinding.ContactItemBinding
 
-class ContactAdapter : RecyclerView.Adapter<ContactAdapter.ContactAdapterViewHolder>() {
+class ContactAdapter(
     private val list: MutableList<Contact> = mutableListOf()
+) : RecyclerView.Adapter<ContactAdapter.ContactAdapterViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ContactAdapterViewHolder {
-        TODO("Not yet implemented")
+        val binding = ContactItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return ContactAdapterViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: ContactAdapterViewHolder, position: Int) {
@@ -20,7 +25,21 @@ class ContactAdapter : RecyclerView.Adapter<ContactAdapter.ContactAdapterViewHol
         return list.size
     }
 
-    class ContactAdapterViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bind(contact: Contact) {  }
+    fun updateList(list: List<Contact>) {
+        this.list.clear()
+        this.list.addAll(list)
+        notifyDataSetChanged()
+    }
+
+    class ContactAdapterViewHolder(binding: ContactItemBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        private val tvName = binding.tvContactName
+        private val tvPhone = binding.tvContactPhone
+        private val ivPhotograph = binding.ivPhotograph
+
+        fun bind(contact: Contact) {
+            tvName.text = contact.name
+            tvPhone.text = contact.phone
+        }
     }
 }
