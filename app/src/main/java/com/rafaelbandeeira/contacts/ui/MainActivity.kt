@@ -2,6 +2,9 @@ package com.rafaelbandeeira.contacts.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.rafaelbandeeira.contacts.R
@@ -39,4 +42,24 @@ class MainActivity : AppCompatActivity() {
             )
         )
     }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        val inflater = menuInflater
+        inflater.inflate(R.menu.menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.item_menu_1 -> {
+                showToast(item)
+                true
+            }
+
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    private fun showToast(item: MenuItem) =
+        Toast.makeText(this, "${item.title} foi clicado.", Toast.LENGTH_SHORT).show()
 }
