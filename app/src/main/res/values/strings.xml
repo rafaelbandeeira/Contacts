@@ -2,4 +2,6 @@
     <string name="app_name">Contacts</string>
     <string name="iv_photograph_content_description">Imagem de perfil</string>
     <string name="title_settings">Settings</string>
+    <string name="open_menu">Open</string>
+    <string name="close_menu">Close</string>
 </resources>

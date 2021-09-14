@@ -4,31 +4,47 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.appcompat.widget.Toolbar
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.rafaelbandeeira.contacts.R
 import com.rafaelbandeeira.contacts.data.Contact
-import com.rafaelbandeeira.contacts.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityMainBinding
+    private val rvList by lazy { findViewById<RecyclerView>(R.id.rv_list) }
     private val _adapter = ContactAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        val view = binding.root
-        setContentView(view)
+        setContentView(R.layout.drawer_menu)
+
+        initDrawer()
         bindViews()
         updateList()
     }
 
+    private fun initDrawer() {
+        val drawerLayout = findViewById<View>(R.id.drawer_layout) as DrawerLayout
+        val toolbar = findViewById<Toolbar>(R.id.toolbar)
+        setSupportActionBar(toolbar)
+
+        val toggle = ActionBarDrawerToggle(
+            this,
+            drawerLayout,
+            toolbar,
+            R.string.open_menu,
+            R.string.close_menu
+        )
+        toggle.syncState()
+    }
+
     private fun bindViews() {
-        binding.rvList.apply {
-            adapter = _adapter
-            layoutManager = LinearLayoutManager(context)
-        }
+        rvList.adapter = _adapter
+        rvList.layoutManager = LinearLayoutManager(this)
     }
 
     fun updateList() {
