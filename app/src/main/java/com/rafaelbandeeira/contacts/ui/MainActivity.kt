@@ -2,34 +2,31 @@ package com.rafaelbandeeira.contacts.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
-import androidx.appcompat.widget.Toolbar
-import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.rafaelbandeeira.contacts.R
 import com.rafaelbandeeira.contacts.data.Contact
+import com.rafaelbandeeira.contacts.databinding.DrawerMenuBinding
 
 class MainActivity : AppCompatActivity() {
-    private val rvList by lazy { findViewById<RecyclerView>(R.id.rv_list) }
+    private val binding by lazy { DrawerMenuBinding.inflate(LayoutInflater.from(this)) }
     private val _adapter = ContactAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.drawer_menu)
-
+        setContentView(binding.root)
         initDrawer()
         bindViews()
         updateList()
     }
 
     private fun initDrawer() {
-        val drawerLayout = findViewById<View>(R.id.drawer_layout) as DrawerLayout
-        val toolbar = findViewById<Toolbar>(R.id.toolbar)
+        val drawerLayout = binding.drawerLayout
+        val toolbar = binding.included.toolbar
         setSupportActionBar(toolbar)
 
         val toggle = ActionBarDrawerToggle(
@@ -43,8 +40,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun bindViews() {
-        rvList.adapter = _adapter
-        rvList.layoutManager = LinearLayoutManager(this)
+        binding.included.rvList.apply {
+            adapter = _adapter
+            layoutManager = LinearLayoutManager(context)
+        }
     }
 
     fun updateList() {
