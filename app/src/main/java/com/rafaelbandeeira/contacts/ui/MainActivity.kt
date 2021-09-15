@@ -1,6 +1,8 @@
 package com.rafaelbandeeira.contacts.ui
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,7 +10,10 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.core.content.edit
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import com.rafaelbandeeira.contacts.R
 import com.rafaelbandeeira.contacts.data.Contact
 import com.rafaelbandeeira.contacts.databinding.DrawerMenuBinding
@@ -21,9 +26,29 @@ class MainActivity : AppCompatActivity(), ClickItemContactListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+
         initDrawer()
+        fetchListContact()
         bindViews()
-        updateList()
+    }
+
+    private fun fetchListContact() {
+        val list = arrayListOf(
+            Contact(
+                name = "Rafael Bandeira",
+                phone = "71 32594611",
+                photograph = "img.jpg"
+            )
+        )
+        getInstanceSharedPreferences().edit {
+            val json = Gson().toJson(list)
+            putString("contacts", json)
+            commit()
+        }
+    }
+
+    private fun getInstanceSharedPreferences() : SharedPreferences {
+        return getSharedPreferences("com.rafaelbandeeira.contacts.PREFERENCES", Context.MODE_PRIVATE)
     }
 
     private fun initDrawer() {
@@ -46,18 +71,18 @@ class MainActivity : AppCompatActivity(), ClickItemContactListener {
             adapter = _adapter
             layoutManager = LinearLayoutManager(context)
         }
+        updateList()
+    }
+
+    private fun getListContacts() : List<Contact> {
+        val list = getInstanceSharedPreferences().getString("contacts", "[]")
+        val turnsType = object : TypeToken<List<Contact>>() {}.type
+        return Gson().fromJson(list, turnsType)
     }
 
     fun updateList() {
-        _adapter.updateList(
-            arrayListOf(
-                Contact(
-                    name = "Rafael Bandeira",
-                    phone = "71 32594611",
-                    photograph = "img.jpg"
-                )
-            )
-        )
+        val list = getListContacts()
+        _adapter.updateList(list)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
