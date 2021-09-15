@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.rafaelbandeeira.contacts.R
 import com.rafaelbandeeira.contacts.data.Contact
 import com.rafaelbandeeira.contacts.databinding.DrawerMenuBinding
+import com.rafaelbandeeira.contacts.ui.ContactDetail.Companion.EXTRA_CONTACT
 
 class MainActivity : AppCompatActivity(), ClickItemContactListener {
     private val binding by lazy { DrawerMenuBinding.inflate(LayoutInflater.from(this)) }
@@ -81,6 +82,7 @@ class MainActivity : AppCompatActivity(), ClickItemContactListener {
 
     override fun clickItemContact(contact: Contact) {
         val intent = Intent(this, ContactDetail::class.java)
+        intent.putExtra(EXTRA_CONTACT, contact)
         startActivity(intent)
     }
 }
