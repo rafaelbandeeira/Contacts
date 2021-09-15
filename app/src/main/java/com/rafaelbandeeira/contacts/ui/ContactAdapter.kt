@@ -9,12 +9,13 @@ import com.rafaelbandeeira.contacts.data.Contact
 import com.rafaelbandeeira.contacts.databinding.ContactItemBinding
 
 class ContactAdapter(
-    private val list: MutableList<Contact> = mutableListOf()
+    private val list: MutableList<Contact> = mutableListOf(),
+    var listener: ClickItemContactListener
 ) : RecyclerView.Adapter<ContactAdapter.ContactAdapterViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ContactAdapterViewHolder {
         val binding = ContactItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return ContactAdapterViewHolder(binding)
+        return ContactAdapterViewHolder(binding, list, listener)
     }
 
     override fun onBindViewHolder(holder: ContactAdapterViewHolder, position: Int) {
@@ -31,11 +32,20 @@ class ContactAdapter(
         notifyDataSetChanged()
     }
 
-    class ContactAdapterViewHolder(binding: ContactItemBinding) :
-        RecyclerView.ViewHolder(binding.root) {
+    class ContactAdapterViewHolder(
+        binding: ContactItemBinding,
+        var list: List<Contact>,
+        var listener: ClickItemContactListener
+    ) : RecyclerView.ViewHolder(binding.root) {
         private val tvName = binding.tvContactName
         private val tvPhone = binding.tvContactPhone
         private val ivPhotograph = binding.ivPhotograph
+
+        init {
+            itemView.setOnClickListener {
+                listener.clickItemContact(list[adapterPosition])
+            }
+        }
 
         fun bind(contact: Contact) {
             tvName.text = contact.name

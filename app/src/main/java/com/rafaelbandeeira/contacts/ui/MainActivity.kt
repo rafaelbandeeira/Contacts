@@ -1,5 +1,6 @@
 package com.rafaelbandeeira.contacts.ui
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -12,9 +13,9 @@ import com.rafaelbandeeira.contacts.R
 import com.rafaelbandeeira.contacts.data.Contact
 import com.rafaelbandeeira.contacts.databinding.DrawerMenuBinding
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), ClickItemContactListener {
     private val binding by lazy { DrawerMenuBinding.inflate(LayoutInflater.from(this)) }
-    private val _adapter = ContactAdapter()
+    private val _adapter = ContactAdapter(listener = this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -77,4 +78,9 @@ class MainActivity : AppCompatActivity() {
 
     private fun showToast(item: MenuItem) =
         Toast.makeText(this, "${item.title} foi clicado.", Toast.LENGTH_SHORT).show()
+
+    override fun clickItemContact(contact: Contact) {
+        val intent = Intent(this, ContactDetail::class.java)
+        startActivity(intent)
+    }
 }
